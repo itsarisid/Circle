@@ -79,8 +79,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   // Current User Profile
   currentUser: UserProfile = {
-    name: 'Mathew Anderson',
-    email: 'info@tailwindadmin.com',
+    name: 'Sajid Khan',
+    email: 'sajid@circle.com',
     designation: 'Designer',
     avatar: '/assets/images/profile/user-1.jpg',
     lastLogin: 'Today at 9:30 AM'
