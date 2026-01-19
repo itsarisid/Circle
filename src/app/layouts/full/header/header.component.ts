@@ -6,6 +6,7 @@ import {
   ViewEncapsulation,
   OnInit,
   OnDestroy,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { CoreService } from 'src/app/services/core.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -36,12 +37,19 @@ interface BreadcrumbItem {
   url: string;
 }
 
-interface profiledd {
-  id: number;
-  img: string;
+interface ProfileMenuItem {
+  icon: string;
   title: string;
   subtitle: string;
   link: string;
+}
+
+interface UserProfile {
+  name: string;
+  email: string;
+  designation: string;
+  avatar: string;
+  lastLogin: string;
 }
 
 @Component({
@@ -69,12 +77,45 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   @Output() optionsChange = new EventEmitter<AppSettings>();
 
+  // Current User Profile
+  currentUser: UserProfile = {
+    name: 'Mathew Anderson',
+    email: 'info@tailwindadmin.com',
+    designation: 'Designer',
+    avatar: '/assets/images/profile/user-1.jpg',
+    lastLogin: 'Today at 9:30 AM'
+  };
+
+  // Profile Menu Items
+  profileMenuItems: ProfileMenuItem[] = [
+    {
+      icon: 'solar:user-circle-line-duotone',
+      title: 'My Profile',
+      subtitle: 'Account Settings',
+      link: '/profile'
+    },
+    {
+      icon: 'solar:letter-line-duotone',
+      title: 'My Inbox',
+      subtitle: 'Messages & Email',
+      link: '/inbox'
+    },
+    {
+      icon: 'solar:checklist-minimalistic-line-duotone',
+      title: 'My Tasks',
+      subtitle: 'To-do and Daily Tasks',
+      link: '/tasks'
+    }
+
+  ];
+
   constructor(
     private settings: CoreService,
     private vsidenav: CoreService,
     public dialog: MatDialog,
     private translate: TranslateService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {
     translate.setDefaultLang('en');
   }
@@ -82,9 +123,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.updateBreadcrumbs(this.router.url);
     this.routerSub = this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
+      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         this.updateBreadcrumbs(event.urlAfterRedirects);
+        this.cdr.detectChanges();
       });
   }
 
@@ -95,7 +137,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private updateBreadcrumbs(url: string) {
-    const segments = url.split('/').filter(s => s);
+    const segments = url.split('/').filter(s => s && !s.startsWith('?'));
     this.breadcrumbs = [];
     let currentUrl = '';
 
@@ -195,30 +237,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       time: '5 hours ago',
       type: 'error',
       read: true,
-    },
-  ];
-
-  profiledd: profiledd[] = [
-    {
-      id: 1,
-      img: '/assets/images/svgs/icon-account.svg',
-      title: 'My Profile',
-      subtitle: 'Account Settings',
-      link: '/',
-    },
-    {
-      id: 2,
-      img: '/assets/images/svgs/icon-inbox.svg',
-      title: 'My Inbox',
-      subtitle: 'Messages & Email',
-      link: '/',
-    },
-    {
-      id: 3,
-      img: '/assets/images/svgs/icon-tasks.svg',
-      title: 'My Tasks',
-      subtitle: 'To-do and Daily Tasks',
-      link: '/',
     },
   ];
 }
