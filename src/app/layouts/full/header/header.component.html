@@ -8,16 +8,36 @@
   </button>
   }
 
-  <mat-form-field appearance="outline" class="hide-hint hidden! sm:flex!">
-    <mat-icon class="flex items-center justify-center" matSuffix>
-      <i class="iconify text-xl" data-icon="solar:magnifer-line-duotone"></i>
-    </mat-icon>
-    <input matInput placeholder="Search..." />
-  </mat-form-field>
-  <!-- --------------------------------------------------------------- -->
+  <!-- Breadcrumb (Dynamic) -->
+  <nav class="flex items-center text-sm text-muted">
+    <a routerLink="/" class="hover:text-primary transition-colors">
+      <i class="iconify text-lg" data-icon="solar:home-2-line-duotone"></i>
+    </a>
+    @for(crumb of breadcrumbs; track crumb.url; let last = $last) {
+    <i class="iconify mx-2 text-xs" data-icon="solar:alt-arrow-right-linear"></i>
+    @if(last) {
+    <span class="text-foreground font-medium">{{ crumb.label }}</span>
+    } @else {
+    <a [routerLink]="crumb.url" class="hover:text-primary transition-colors">{{ crumb.label }}</a>
+    }
+    }
+  </nav>
 
+  <!-- Spacer to push search to center -->
+  <span class="flex-1"></span>
 
-  <span class="flex-auto"></span>
+  <!-- Reddit-style Search Bar (Centered) -->
+  <div class="reddit-search hidden sm:flex items-center w-full max-w-md">
+    <div class="relative w-full">
+      <i class="iconify absolute left-4 top-1/2 -translate-y-1/2 text-muted text-lg"
+        data-icon="solar:magnifer-line-duotone"></i>
+      <input type="text" placeholder="Search SafeLoop..."
+        class="w-full py-2.5 pl-11 pr-4 rounded-full bg-[var(--mat-sys-surface-container)] border border-[var(--mat-sys-outline-variant)] text-sm placeholder:text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" />
+    </div>
+  </div>
+
+  <!-- Spacer to balance the layout -->
+  <span class="flex-1"></span>
 
 
   @if(options.theme=='light'){
@@ -33,26 +53,55 @@
   <!-- --------------------------------------------------------------- -->
   <!-- Notification Dropdown -->
   <!-- --------------------------------------------------------------- -->
-  <button mat-icon-button matBadge="5" [matMenuTriggerFor]="notificationmenu" aria-label="Notifications"
-    class="notification-badge">
+  <button mat-icon-button [matBadge]="unreadCount" [matBadgeHidden]="unreadCount === 0"
+    [matMenuTriggerFor]="notificationmenu" aria-label="Notifications" class="notification-badge">
     <i class="iconify" data-icon="solar:bell-line-duotone"></i>
   </button>
-  <mat-menu #notificationmenu="matMenu" class="topbar-dd cardWithShadow">
-    <div class="flex items-center px-6 py-4">
-      <h6 class="text-lg">Notifications</h6>
-
+  <mat-menu #notificationmenu="matMenu" class="topbar-dd cardWithShadow notification-menu">
+    <!-- Header -->
+    <div class="flex items-center justify-between px-4 py-3 border-b border-[var(--mat-sys-outline-variant)]"
+      (click)="$event.stopPropagation()">
+      <h6 class="text-base font-semibold">Notifications</h6>
+      <div class="flex items-center gap-2">
+        @if(unreadCount > 0) {
+        <span class="bg-primary text-white text-xs px-2 py-0.5 rounded-full">{{ unreadCount }} new</span>
+        }
+        <button mat-icon-button class="!size-8" (click)="markAllAsRead(); $event.stopPropagation()">
+          <i class="iconify text-sm" data-icon="solar:check-read-line-duotone"></i>
+        </button>
+      </div>
     </div>
 
-    @for(notification of notifications; track notification.title) {
-    <button mat-menu-item class="px-6 py-2">
-      <div>
-        <h5 class="text-sm font-semibold m-0 ">
-          {{ notification.title }}
-        </h5>
-        <span class="text-xs text-muted">{{ notification.subtitle }}</span>
-      </div>
-    </button>
-    }
+    <!-- Notification List -->
+    <div class="max-h-80 overflow-y-auto">
+      @for(notification of notifications; track notification.id) {
+      <button mat-menu-item class="!h-auto !py-3 !px-4" [class.opacity-60]="notification.read"
+        (click)="markAsRead(notification)">
+        <div class="flex items-start gap-3 w-full">
+          <div class="relative flex-shrink-0">
+            <img [src]="notification.img" class="rounded-full w-10 h-10 object-cover" />
+            <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-[var(--mat-sys-surface)]"
+              [ngClass]="getNotificationTypeColor(notification.type)"></span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between gap-2">
+              <h5 class="text-sm font-semibold m-0 truncate">{{ notification.title }}</h5>
+              @if(!notification.read) {
+              <span class="w-2 h-2 bg-primary rounded-full flex-shrink-0"></span>
+              }
+            </div>
+            <p class="text-xs text-muted m-0 mt-0.5 line-clamp-2">{{ notification.subtitle }}</p>
+            <span class="text-xs text-muted mt-1 block">{{ notification.time }}</span>
+          </div>
+        </div>
+      </button>
+      }
+    </div>
+
+    <!-- Footer -->
+    <div class="p-3 border-t border-[var(--mat-sys-outline-variant)]">
+      <button mat-stroked-button color="primary" class="w-full">See all notifications</button>
+    </div>
   </mat-menu>
 
   <!-- --------------------------------------------------------------- -->
