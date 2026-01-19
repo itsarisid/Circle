@@ -109,6 +109,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ];
 
+  languages = [
+    { code: 'en', name: 'English', icon: '/assets/images/flag/icon-flag-en.svg' },
+    { code: 'hi', name: 'हिंदी', icon: '/assets/images/flag/icon-flag-in.svg' },
+    { code: 'ar', name: 'عربي', icon: '/assets/images/flag/icon-flag-sa.svg' },
+  ];
+
+  selectedLanguage = this.languages[0];
+
+  changeLanguage(lang: any) {
+    this.selectedLanguage = lang;
+    this.translate.use(lang.code);
+  }
+
   constructor(
     private settings: CoreService,
     private vsidenav: CoreService,

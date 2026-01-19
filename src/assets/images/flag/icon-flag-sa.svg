@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+<rect width="900" height="600" fill="#006C35"/>
+<!-- Simplified Representation of Shahada and Sword -->
+<path fill="#ffffff" d="M250,200 Q450,150 650,200 T800,200 M250,250 Q450,200 650,250 T800,250" stroke="#ffffff" stroke-width="15" stroke-linecap="round"/>
+<path fill="#ffffff" d="M250,400 L750,400 L720,430 L250,430 Z" />
+<circle cx="230" cy="415" r="15" fill="#ffffff"/>
+</svg>
