@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { MaterialModule } from '../../material.module';
-import { AppMathewAndersonComponent } from 'src/app/components/mathew-anderson/mathew-anderson.component';
+import { AppSajidKhanComponent } from 'src/app/components/sajid-khan/sajid-khan.component';
 import { AppTopCardsComponent } from 'src/app/components/top-cards/top-cards.component';
 import { AppRevenueUpdatesComponent } from 'src/app/components/revenue-updates/revenue-updates.component';
 import { AppYearlyBreakupComponent } from 'src/app/components/yearly-breakup/yearly-breakup.component';
@@ -12,7 +12,7 @@ import { AppTopProjectsComponent } from 'src/app/components/top-projects/top-pro
   selector: 'app-starter',
   imports: [
     MaterialModule,
-    AppMathewAndersonComponent,
+    AppSajidKhanComponent,
     AppTopCardsComponent,
     AppRevenueUpdatesComponent,
     AppYearlyBreakupComponent,

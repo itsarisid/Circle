@@ -3,10 +3,10 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MaterialModule } from 'src/app/material.module';
 
 @Component({
-  selector: 'app-mathew-anderson',
+  selector: 'app-sajid-khan',
   imports: [MaterialModule, MatBadgeModule],
-  templateUrl: './mathew-anderson.component.html',
+  templateUrl: './sajid-khan.component.html',
 })
-export class AppMathewAndersonComponent {
+export class AppSajidKhanComponent {
 
 }
