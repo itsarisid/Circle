@@ -19,6 +19,16 @@
   padding: 20px;
 }
 
+// Sidebar branding area with smooth transitions
+.sidebar-branding {
+  min-height: 70px;
+  overflow: hidden;
+
+  .branding-full {
+    padding: 12px 20px;
+  }
+}
+
 .sidebar-list {
   &.mdc-list {
     padding: 0 24px;
