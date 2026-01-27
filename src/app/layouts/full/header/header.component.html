@@ -1,5 +1,11 @@
 <mat-toolbar class="topbar gap-2 border-b border-[var(--mat-sys-outline-variant)]">
 
+  <!-- Desktop Sidebar Toggle (Hamburger) -->
+  @if(showToggle) {
+  <button mat-icon-button (click)="toggleCollapsed.emit()" class="flex justify-center" aria-label="Toggle Sidebar">
+    <i class="iconify flex" data-icon="solar:hamburger-menu-linear"></i>
+  </button>
+  }
 
   <!-- Mobile Menu -->
   @if(!showToggle) {

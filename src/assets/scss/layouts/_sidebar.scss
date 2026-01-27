@@ -3,11 +3,16 @@
 .mat-drawer.sidebarNav {
   width: $sidenav-desktop;
   flex-shrink: 0;
-  transition: swift-ease-out(width);
+  transition: width 300ms ease-in-out;
   position: absolute;
   overflow-x: hidden;
   border-right: 1px solid $borderColor;
   border-radius: 0px !important;
+
+  // Collapsed state
+  &.sidebar-collapsed {
+    width: $sidenav-mini !important;
+  }
 }
 
 .branding {
@@ -17,6 +22,11 @@
 .sidebar-list {
   &.mdc-list {
     padding: 0 24px;
+    transition: padding 300ms ease-in-out;
+
+    .sidebar-collapsed & {
+      padding: 0 8px;
+    }
 
     .mdc-list-group__subheader {
       margin: 4px 0;
@@ -24,6 +34,17 @@
       font-size: 0.75rem;
       font-weight: 700;
       margin-top: 24px;
+
+      .sidebar-collapsed & {
+        display: none;
+      }
+    }
+
+    // Nav caption collapsed divider
+    .nav-caption-collapsed {
+      height: 1px;
+      background-color: var(--mat-sys-outline-variant);
+      margin: 8px 4px;
     }
 
     .menu-list-item {
@@ -31,6 +52,7 @@
       gap: 12px;
       padding: 10px 10px !important;
       margin-bottom: 2px;
+      transition: all 300ms ease-in-out;
 
       &:hover {
 
@@ -106,6 +128,31 @@
             align-items: center;
             justify-content: center;
           }
+        }
+      }
+
+      // Collapsed state - center icons
+      .sidebar-collapsed & {
+        justify-content: center !important;
+        padding: 10px 8px !important;
+        gap: 0 !important;
+
+        .mdc-list-item__content {
+          display: flex !important;
+          justify-content: center !important;
+          align-items: center !important;
+          width: auto !important;
+          flex: none !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+
+        .mdc-list-item__start {
+          margin: 0 !important;
+        }
+
+        .routeIcon {
+          font-size: 22px !important;
         }
       }
     }

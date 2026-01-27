@@ -5,13 +5,15 @@
     <!-- ============================================================== -->
 
     <mat-sidenav #leftsidenav [mode]="isOver ? 'over' : 'side'" [opened]="!isOver"
-      (openedChange)="onSidenavOpenedChange($event)" (closedStart)="onSidenavClosedStart()" class="sidebarNav">
+      (openedChange)="onSidenavOpenedChange($event)" (closedStart)="onSidenavClosedStart()" class="sidebarNav"
+      [class.sidebar-collapsed]="isCollapsed()">
       <div class="flex-layout flex flex-col h-full">
-        <app-sidebar (toggleMobileNav)="sidenav.toggle()" [showToggle]="isOver"></app-sidebar>
+        <app-sidebar (toggleMobileNav)="sidenav.toggle()" [showToggle]="isOver"
+          [isCollapsed]="isCollapsed()"></app-sidebar>
         <ng-scrollbar class="relative" style="height: 100%">
           <mat-nav-list class="sidebar-list">
             @for(item of navItems; track item) {
-            <app-nav-item [item]="item" (notify)="sidenav.toggle()" class="top-parent">
+            <app-nav-item [item]="item" (notify)="sidenav.toggle()" class="top-parent" [isCollapsed]="isCollapsed()">
             </app-nav-item>
             }
           </mat-nav-list>

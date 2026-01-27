@@ -1,5 +1,5 @@
 import { BreakpointObserver, MediaMatcher } from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation, signal } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
 import { CoreService } from 'src/app/services/core.service';
@@ -55,6 +55,9 @@ interface quicklinks {
 })
 export class FullComponent implements OnInit {
   navItems = navItems;
+
+  // Sidebar collapsed state using Angular signal
+  isCollapsed = signal(false);
 
 
 
@@ -229,6 +232,7 @@ export class FullComponent implements OnInit {
 
   toggleCollapsed() {
     this.isContentWidthFixed = false;
+    this.isCollapsed.update(v => !v);
     this.options.sidenavCollapsed = !this.options.sidenavCollapsed;
     this.resetCollapsedState();
   }
