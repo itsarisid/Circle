@@ -7,6 +7,8 @@ import {
   OnInit,
   OnDestroy,
   ChangeDetectorRef,
+  signal,
+  WritableSignal
 } from '@angular/core';
 import { CoreService } from 'src/app/services/core.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -72,7 +74,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @Output() toggleCollapsed = new EventEmitter<void>();
 
   showFiller = false;
-  breadcrumbs: BreadcrumbItem[] = [];
+  showFiller = false;
+  breadcrumbs: WritableSignal<BreadcrumbItem[]> = signal([]);
   private routerSub: Subscription | null = null;
 
   @Output() optionsChange = new EventEmitter<AppSettings>();
@@ -139,7 +142,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         this.updateBreadcrumbs(event.urlAfterRedirects);
-        this.cdr.detectChanges();
       });
   }
 
@@ -151,18 +153,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private updateBreadcrumbs(url: string) {
     const segments = url.split('/').filter(s => s && !s.startsWith('?'));
-    this.breadcrumbs = [];
+    const breadcrumbList: BreadcrumbItem[] = [];
     let currentUrl = '';
 
     for (const segment of segments) {
       currentUrl += '/' + segment;
       const label = this.formatLabel(segment);
-      this.breadcrumbs.push({ label, url: currentUrl });
+      breadcrumbList.push({ label, url: currentUrl });
     }
 
-    if (this.breadcrumbs.length === 0) {
-      this.breadcrumbs.push({ label: 'Dashboard', url: '/' });
+    if (breadcrumbList.length === 0) {
+      breadcrumbList.push({ label: 'Dashboard', url: '/' });
     }
+
+    this.breadcrumbs.set(breadcrumbList);
   }
 
   private formatLabel(segment: string): string {

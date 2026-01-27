@@ -19,7 +19,7 @@
     <a routerLink="/" class="hover:text-primary transition-colors">
       <i class="iconify text-lg" data-icon="solar:home-2-line-duotone"></i>
     </a>
-    @for(crumb of breadcrumbs; track crumb.url; let last = $last) {
+    @for(crumb of breadcrumbs(); track crumb.url; let last = $last) {
     <i class="iconify mx-2 text-xs" data-icon="solar:alt-arrow-right-linear"></i>
     @if(last) {
     <span class="text-foreground font-medium">{{ crumb.label }}</span>
